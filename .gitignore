@@ -1,5 +1,6 @@
 ### new ignore in fork
 test*.py
+*.json
 
 ### previous gitignore
 # Linkedin-api
