@@ -24,5 +24,6 @@ Possible config changes:
 4. Install modified LinkedIn API: `pip install .\pkg_dir\`
 
 OR alternatively, install API via github: `pip install 'git+https://github.com/ACC1100/linkedin-auto_connect.git#egg=linkedin-auto_connect&subdirectory=pkg_dir'`
+
 5. Run `autoconnect.py` file and follow instructions
 6. (optional) modify `config.ini` to change script settings
