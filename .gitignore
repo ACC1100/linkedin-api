@@ -1,3 +1,7 @@
+### new ignore in fork
+test*.py
+
+### previous gitignore
 # Linkedin-api
 **tmp/
 .env
