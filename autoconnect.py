@@ -28,17 +28,17 @@ class Auto_Connector:
         print('no config detected')
 
         self.config.add_section('SEARCH')
-        self.config.set('SEARCH', '# change keywords to search for\n# leave empty for no keywords\n# default empty')
+        self.config.set('SEARCH', '# see: https://github.com/ACC1100/linkedin-auto_connect#Config for explanation of values and how to customise')
         self.config.set('SEARCH', 'keywords', '')
+        self.config.set('SEARCH', 'network_depths', 'S')
+        self.config.set('SEARCH', 'regions', '101452733')
+        self.config.set('SEARCH', 'schools', '10231, 10242')
 
         self.config.add_section('CONNECTIONS')
-        self.config.set('CONNECTIONS', '# randomise order which connections are sent based on search results\n# False: no randomise, add connections sequentially from first to last in order provided in search results\n# True: add connections in random order from search results')
         self.config.set('CONNECTIONS', 'random', 'False')
 
-        self.config.set('CONNECTIONS', '# change the connection message\n# default empty')
         self.config.set('CONNECTIONS', 'message', '')
     
-        self.config.set('CONNECTIONS', '# change the time between connection requests, time is randomised between lower and upper bounds\n# WARNING, LOWER AVERAGE WAIT TIMES IS LIKELY TO INCREASE CHANCE OF BAN\n# default lower=5, upper=50\n# input must be integer')
         self.config.set('CONNECTIONS', 'lower_wait_time', '5')
         self.config.set('CONNECTIONS', 'upper_wait_time', '50')
 
@@ -66,10 +66,16 @@ class Auto_Connector:
         print("running search")
         results = self.linkedin.search_people(
                     keywords=self.config["SEARCH"]['keywords'],
-                    network_depths=["S"],
+                    network_depths=self._string_to_list(self.config["SEARCH"]['network_depths']),
+                    regions=self._string_to_list(self.config["SEARCH"]['regions']),
+                    schools=self._string_to_list(self.config["SEARCH"]['schools']),
                     profile_languages=["en"])
         print("finished search")
         return results
+    
+    def _string_to_list(self, string):
+        """converts items separated by comma in string to list form"""
+        return list(map(lambda x: x.strip(), string.split(',')))
 
     def connect(self, search_results):
         print("initiating auto-connect")
