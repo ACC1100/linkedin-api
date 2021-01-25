@@ -36,7 +36,6 @@ OR alternatively, install API via github: `pip install 'git+https://github.com/A
 - Change the lower and upper bound on time between connection requests
 
 ## Explanation of default values:
-- ``
 ### SEARCH
 - `keywords = ` change keywords to search for, leave empty for no keywords
 ##### THE FOLLOWING PARAMETERS ARE INPUTTED AS LISTS, PLEASE ENSURE ALL VALUES ARE SEPARATED BY COMMAS IF CHANGING
