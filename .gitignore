@@ -2,6 +2,7 @@
 test*.py
 *.json
 my_stuff/
+config.ini
 
 ### previous gitignore
 # Linkedin-api
