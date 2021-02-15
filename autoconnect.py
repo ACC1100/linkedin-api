@@ -135,7 +135,7 @@ class Auto_Connector:
                     print(f"Success: {pid}")
                     fail_count = 0
             
-                wait = round(random.random() * random.randrange(int(self.config["CONNECTIONS"]['lower_wait_time']), int(self.config["CONNECTIONS"]['upper_wait_time'])), 2)
+                wait = round(random.randrange(int(self.config["CONNECTIONS"]['lower_wait_time']), int(self.config["CONNECTIONS"]['upper_wait_time'])), 2)
                 print(f"waiting {wait} seconds")
                 time.sleep(wait)
             
