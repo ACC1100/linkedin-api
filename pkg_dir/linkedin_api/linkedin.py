@@ -47,7 +47,7 @@ class Linkedin(object):
     _MAX_UPDATE_COUNT = 100  # max seems to be 100
     _MAX_SEARCH_COUNT = 49  # max seems to be 49, and min seems to be 2
     _MAX_REPEATED_REQUESTS = (
-        200  # VERY conservative max requests count to avoid rate-limit
+        50  # VERY conservative max requests count to avoid rate-limit
     )
 
     def __init__(
