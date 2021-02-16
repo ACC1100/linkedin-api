@@ -79,6 +79,7 @@ class Auto_Connector:
         print("finished search")
 
         with open("search_results.json", "w") as f:
+            f.seek(0)
             json.dump(results, f, ensure_ascii=True, indent=4)
         print("wrote search results to file")
 
