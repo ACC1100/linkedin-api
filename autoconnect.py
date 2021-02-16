@@ -96,8 +96,7 @@ class Auto_Connector:
             with open("search_results.json", "r") as f:
                 search_results = json.load(f)
             
-            print("existing search results found, continue with existing results?")
-            print("or create new results?")
+            print("existing search results found, continue with existing results? or create new results?")
             print("0: continue, 1: create new")
             response = input()
 
@@ -112,53 +111,48 @@ class Auto_Connector:
         except FileNotFoundError:
             search_results = self.search()
 
-        print("initiating auto-connect")
-        print("ctrl+c to cancel at anytime")
+        print("initiating auto-connect, ctrl+c to cancel at anytime")
 
         fail_count = 0
         self.search_results = search_results
-        while True:
-            if self.config["CONNECTIONS"]['random'] == "True":
-                item = random.choice(self.search_results)
-            else:
-                item = self.search_results[0]
-            self.search_results.remove(item) # probably slow
 
-            urn = item['urn_id']
-            pid = item['public_id']
-            if urn is not None:
-                status = self.linkedin.add_connection(pid, profile_urn=urn, message=self.config["CONNECTIONS"]['message'])
-                if status is True:
-                    print(f"Error connecting with: {pid}")
-                    fail_count += 1
+        signal.signal(signal.SIGINT, signal.default_int_handler) # fixes when sometime KeyboardInterrupt doesnt fire? https://stackoverflow.com/questions/40775054/capturing-sigint-using-keyboardinterrupt-exception-works-in-terminal-not-in-scr/40785230#40785230
+        try:
+            while True:
+                if self.config["CONNECTIONS"]['random'] == "True":
+                    item = random.choice(self.search_results)
                 else:
-                    print(f"Success: {pid}")
-                    fail_count = 0
-            
-                wait = round(random.randrange(int(self.config["CONNECTIONS"]['lower_wait_time']), int(self.config["CONNECTIONS"]['upper_wait_time'])), 2)
-                print(f"waiting {wait} seconds")
-                time.sleep(wait)
-            
-            if fail_count >= 5:
-                print("ERROR: FAILED 5 CONSECUTIVE CONNECTIONS,")
-                print("you are likely to be rate limited,")
-                print("double check by manually sending a connection through LinkedIn website")
-                print("EXITING")
-                return
+                    item = self.search_results[0]
+                self.search_results.remove(item) # probably slow
 
+                urn = item['urn_id']
+                pid = item['public_id']
+                if urn is not None:
+                    status = self.linkedin.add_connection(pid, profile_urn=urn, message=self.config["CONNECTIONS"]['message'])
+                    if status is True:
+                        print(f"Error connecting with: {pid}")
+                        fail_count += 1
+                    else:
+                        print(f"Success: {pid}")
+                        fail_count = 0
+                
+                    wait = round(random.randrange(int(self.config["CONNECTIONS"]['lower_wait_time']), int(self.config["CONNECTIONS"]['upper_wait_time'])), 2)
+                    print(f"waiting {wait} seconds")
+                    time.sleep(wait)
+                
+                if fail_count >= 5:
+                    print("ERROR: FAILED 5 CONSECUTIVE CONNECTIONS \n you are likely to be rate limited, double check by manually sending a connection through LinkedIn website")
+                    raise KeyboardInterrupt
 
-        
-
-    def signal_handler(self, sig, frame):
-        with open("search_results.json", "w") as f:
-            f.seek(0)
-            json.dump(self.search_results, f, ensure_ascii=True, indent=4)
-        print('successfully saved updated search before exiting')
-        sys.exit(0)
+        except KeyboardInterrupt:
+            with open("search_results.json", "w") as f:
+                f.seek(0)
+                json.dump(self.search_results, f, ensure_ascii=True, indent=4)
+            print('successfully saved updated search before exiting')
+            sys.exit(0)
 
 
 
 if __name__ == "__main__":
     connector = Auto_Connector()
-    signal.signal(signal.SIGINT, connector.signal_handler)
     connector.connect()
