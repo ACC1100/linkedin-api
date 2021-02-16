@@ -60,6 +60,7 @@ class Auto_Connector:
         new_credentials['password'] = password
 
         with open("credentials.json", "w") as f:
+            f.seek(0)
             json.dump(new_credentials, f, ensure_ascii=False, indent=4)
 
         print('successfully created new credentials')
