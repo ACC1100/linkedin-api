@@ -1,3 +1,7 @@
+**To anyone reading this - this is an old thing I made/forked, honestly it's a little embarassing and I wanted to private it but you can't private forks. Therefore, I'm opting to keep this public for knowedge preservation, please save your judgement** :,)
+
+---
+
 # LinkedIn Autoconnect
 Python script to automatically connect with other second degree connections on LinkedIn.
 
